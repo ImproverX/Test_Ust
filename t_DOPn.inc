@@ -25,7 +25,7 @@ D_6403:	.db 00Ah	; "_" - |    ■ ■ | (offset 6403h)
 	.db " nabor testow.   "
 	.db 00Ah, 00Dh
 	.db 018h
-	.db "    dlq |togo,ego"
+	.db "    dlq |togo ego"
 	.db " neobhodimo dozagruzitx"
 	.db 00Ah, 00Dh
 	.db 018h
