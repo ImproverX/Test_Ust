@@ -71,12 +71,12 @@ L_59EE:	CALL    L_5D3C
 	MVI  A, 003h
 	STA     D_5E04
 L_5A0D:	CALL    L_5C32
-	CALL    L_5D88
+	CALL    L_5D88	; чип >>
 	PUSH PSW
 	PUSH B
 	PUSH D
 	MVI  A, 001h
-	CALL    L_0156
+	CALL    L_0156	; цвет
 	LDA     D_5A61
 	MOV  C, A
 	INR  C
@@ -84,21 +84,21 @@ L_5A0D:	CALL    L_5C32
 	STA     D_5A61
 	MVI  B, 015h
 	MVI  A, 001h
-	CALL    L_013E
+	CALL    L_013E	; plot
 	LDA     D_5A61
 	MOV  C, A
 	MVI  B, 02Fh
 	MVI  A, 002h
-	CALL    L_0141
+	CALL    L_0141	; line <- закраска шкалы
 	MVI  A, 078h
-	CALL    L_0156
+	CALL    L_0156	; цвет
 	POP  D
 	POP  B
 	POP  PSW
 	LXI  H, D_5E04
 	DCR  M
 	MOV  A, M
-	JP      L_5A0D
+	JP      L_5A0D	; цикл >>>
 	LXI  H, D_5E00
 	MOV  A, M
 	INX  H
@@ -508,7 +508,7 @@ L_5D2E:	SHLD    D_5DFC
 ;
 L_5D3C:	MVI  C, 004h
 	MVI  B, 020h
-	LXI  D, D_5DCA
+	LXI  D, D_CHIP
 	LXI  H, M_8535	; ?
 L_5D46:	CALL    L_5D5E
 	DCR  B
@@ -558,8 +558,8 @@ L_5D78:	LDAX D
 ;
 D_5D84:	.db 003h
 	.db 001h
-	.db 002h	; "_" - |      ■ | (offset 5D86h)
-	.db 000h	; "_" - |        | (offset 5D87h)
+	.db 002h
+	.db 000h
 ;
 L_5D88:	PUSH B
 	PUSH H
@@ -574,13 +574,13 @@ L_5D88:	PUSH B
 	MOV  C, M
 	LXI  H, M_8535	; ?
 L_5D9F:	DCR  C
-	JM      L_5DAA
+	JM      L_5DAA	; >>
 	MOV  A, L
 	ADI     022h
 	MOV  L, A
 	JMP     L_5D9F
 ;
-L_5DAA:	LXI  D, D_5DE3
+L_5DAA:	LXI  D, D_BRAK
 	MVI  B, 008h
 X_5DAF:	LDA     M_0000	; ?
 L_5DB2:	RRC
@@ -601,68 +601,17 @@ L_5DC7:	POP  H
 	POP  B
 	RET
 ;
-D_5DCA:	.db 07Eh	; "~" - | ■■■■■■ | (offset 5DCAh)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DCBh)
-	.db 0FBh	; "√" - |■■■■■ ■■| (offset 5DCCh)
-	.db 07Ah	; "z" - | ■■■■ ■ | (offset 5DCDh)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DCEh)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DCFh)
-	.db 07Eh	; "~" - | ■■■■■■ | (offset 5DD0h)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DD1h)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DD2h)
-	.db 07Eh	; "~" - | ■■■■■■ | (offset 5DD3h)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DD4h)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DD5h)
-	.db 07Eh	; "~" - | ■■■■■■ | (offset 5DD6h)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DD7h)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DD8h)
-	.db 07Eh	; "~" - | ■■■■■■ | (offset 5DD9h)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DDAh)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DDBh)
-	.db 07Eh	; "~" - | ■■■■■■ | (offset 5DDCh)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DDDh)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DDEh)
-	.db 07Eh	; "~" - | ■■■■■■ | (offset 5DDFh)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DE0h)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DE1h)
-	.db 07Eh	; "~" - | ■■■■■■ | (offset 5DE2h)
-D_5DE3:	.db 0FFh	; " " - |■■■■■■■■| (offset 5DE3h)
-	.db 081h	; "Б" - |■      ■| (offset 5DE4h)
-	.db 085h	; "Е" - |■    ■ ■| (offset 5DE5h)
-	.db 085h	; "Е" - |■    ■ ■| (offset 5DE6h)
-	.db 081h	; "Б" - |■      ■| (offset 5DE7h)
-	.db 081h	; "Б" - |■      ■| (offset 5DE8h)
-	.db 0BDh	; "╜" - |■ ■■■■ ■| (offset 5DE9h)
-	.db 0ADh	; "н" - |■ ■ ■■ ■| (offset 5DEAh)
-	.db 0ADh	; "н" - |■ ■ ■■ ■| (offset 5DEBh)
-	.db 081h	; "Б" - |■      ■| (offset 5DECh)
-	.db 0BDh	; "╜" - |■ ■■■■ ■| (offset 5DEDh)
-	.db 0A9h	; "й" - |■ ■ ■  ■| (offset 5DEEh)
-	.db 0B9h	; "╣" - |■ ■■■  ■| (offset 5DEFh)
-	.db 081h	; "Б" - |■      ■| (offset 5DF0h)
-	.db 09Dh	; "Э" - |■  ■■■ ■| (offset 5DF1h)
-	.db 0A9h	; "й" - |■ ■ ■  ■| (offset 5DF2h)
-	.db 0BDh	; "╜" - |■ ■■■■ ■| (offset 5DF3h)
-	.db 081h	; "Б" - |■      ■| (offset 5DF4h)
-	.db 0BDh	; "╜" - |■ ■■■■ ■| (offset 5DF5h)
-	.db 099h	; "Щ" - |■  ■■  ■| (offset 5DF6h)
-	.db 0B5h	; "╡" - |■ ■■ ■ ■| (offset 5DF7h)
-	.db 0A5h	; "е" - |■ ■  ■ ■| (offset 5DF8h)
-	.db 081h	; "Б" - |■      ■| (offset 5DF9h)
-	.db 081h	; "Б" - |■      ■| (offset 5DFAh)
-	.db 0FFh	; " " - |■■■■■■■■| (offset 5DFBh)
-D_5DFC:	.db 000h	; "_" - |        | (offset 5DFCh)
-	.db 000h	; "_" - |        | (offset 5DFDh)
+D_5DFC:	.dw 00000h	;
 D_5DFE:	.db 000h	; "_" - |        | (offset 5DFEh)
 D_5DFF:	.db 000h	; "_" - |        | (offset 5DFFh)
-D_5E00:	.db 000h	; "_" - |        | (offset 5E00h)
-	.db 000h	; "_" - |        | (offset 5E01h)
-	.db 000h	; "_" - |        | (offset 5E02h)
-	.db 000h	; "_" - |        | (offset 5E03h)
+D_5E00:	.db 000h	; ошибки КД, стока чипов №1
+	.db 000h	; ошибки КД, стока чипов №3
+	.db 000h	; ошибки КД, стока чипов №2
+	.db 000h	; ошибки КД, стока чипов №4
 D_5E04:	.db 000h	; "_" - |        | (offset 5E04h)
 D_5E05:	.db 000h
 D_PORT:	.db 010h	; порт КД
-D_XP:	.dw X_O1+1
+D_XP:	.dw X_O1+1	; список адресов команд OUT для КД
 	.dw X_O2+1
 	.dw X_O3+1
 	.dw X_O4+1
