@@ -196,7 +196,7 @@ D_6128:	.db 01Ch	;(8) -- влево-вверх
 	.db 019h	;(2) -- вправо-вверх --
 	.db 01Dh	;(1) -- вверх
 ;
-L_5883:	LXI  H, D_5ABE	;
+L_5883:	LXI  H, D_5ABE	; грузит BC из таблицы по смещению =A-1
 	DCR  A
 	ADD  A
 	MVI  B, 000h
@@ -685,22 +685,14 @@ D_5AA0:	.db "dvojstik 1"
 	.db "dvojstik 2"
 	.db 000h	; "_" - |        | (offset 5ABDh)
 ;
-D_5ABE:	.db 03Fh	; "?" - |  ■■■■■■| (offset 5ABEh)
-	.db 08Dh	; "Н" - |■   ■■ ■| (offset 5ABFh)
-	.db 05Fh	; "_" - | ■ ■■■■■| (offset 5AC0h)
-	.db 08Dh	; "Н" - |■   ■■ ■| (offset 5AC1h)
-	.db 05Fh	; "_" - | ■ ■■■■■| (offset 5AC2h)
-	.db 06Dh	; "m" - | ■■ ■■ ■| (offset 5AC3h)
-	.db 05Fh	; "_" - | ■ ■■■■■| (offset 5AC4h)
-	.db 04Dh	; "M" - | ■  ■■ ■| (offset 5AC5h)
-	.db 03Fh	; "?" - |  ■■■■■■| (offset 5AC6h)
-	.db 04Dh	; "M" - | ■  ■■ ■| (offset 5AC7h)
-	.db 01Fh	; "_" - |   ■■■■■| (offset 5AC8h)
-	.db 04Dh	; "M" - | ■  ■■ ■| (offset 5AC9h)
-	.db 01Fh	; "_" - |   ■■■■■| (offset 5ACAh)
-	.db 06Dh	; "m" - | ■■ ■■ ■| (offset 5ACBh)
-	.db 01Fh	; "_" - |   ■■■■■| (offset 5ACCh)
-	.db 08Dh	; "Н" - |■   ■■ ■| (offset 5ACDh)
+D_5ABE:	.dw 08D3Fh	;1
+	.dw 08D5Fh	;2
+	.dw 06D5Fh	;3
+	.dw 04D5Fh	;4
+	.dw 04D3Fh	;5
+	.dw 04D1Fh	;6
+	.dw 06D1Fh	;7
+	.dw 08D1Fh	;8
 ;
 D_5ACE:	.dw 00000h
 D_5AD0:	.dw 00000h
