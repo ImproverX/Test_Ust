@@ -1,4 +1,4 @@
-M_DE50:	.equ    0DE50h
+M_DE50:	.equ    0DE37h
 L_2C10:
 L_MA20:	MVI  A, 000h
 	CALL    L_0156
@@ -599,7 +599,7 @@ L_NDA8:	PUSH H
 	SHLD    D_MED7	; инкремент счётчика ошибок
 	POP  H
 	MOV  C, A
-	MVI  L, 030h
+	MVI  L, 017h	;30h
 	MOV  A, H
 	ANI     060h
 	MOV  H, A
@@ -640,15 +640,15 @@ L_NDE5:	PUSH B
 	MVI  A, 004h	;
 	XRA  H		;
 	MOV  H, A	;
-	LXI  D, D_NE41	; чип с браком
+	LXI  D, D_BRAK	; чип с браком
 	JMP     L_NE0A
 ;
-L_NE07:	LXI  D, D_NE28	; чип нормальный
+L_NE07:	LXI  D, D_CHIP	; чип нормальный
 L_NE0A:	MVI  B, 019h	; высота чипа
 L_NE0C:	LDAX D
 	MOV  M, A
 	INX  D
-	DCR  L
+	INR  L		;DCR  L
 	DCR  B
 	JNZ     L_NE0C
 	POP  H
@@ -924,58 +924,6 @@ D_ME9F:
 ;	.db 080h	; "А" - |■       | (offset 2ED4h)
 ;	.db 007h	;
 	.db 055h	;--
-;
-D_NE28:	.db 07Eh	; | ■■■■■■ | (offset 2E28h)
-	.db 0FFh	; |■■■■■■■■| (offset 2E29h)
-	.db 0FFh	; |■■■■■■■■| (offset 2E2Ah)
-	.db 07Eh	; | ■■■■■■ | (offset 2E2Bh)
-	.db 0FFh	; |■■■■■■■■| (offset 2E2Ch)
-	.db 0FFh	; |■■■■■■■■| (offset 2E2Dh)
-	.db 07Eh	; | ■■■■■■ | (offset 2E2Eh)
-	.db 0FFh	; |■■■■■■■■| (offset 2E2Fh)
-	.db 0FFh	; |■■■■■■■■| (offset 2E30h)
-	.db 07Eh	; | ■■■■■■ | (offset 2E31h)
-	.db 0FFh	; |■■■■■■■■| (offset 2E32h)
-	.db 0FFh	; |■■■■■■■■| (offset 2E33h)
-	.db 07Eh	; | ■■■■■■ | (offset 2E34h)
-	.db 0FFh	; |■■■■■■■■| (offset 2E35h)
-	.db 0FFh	; |■■■■■■■■| (offset 2E36h)
-	.db 07Eh	; | ■■■■■■ | (offset 2E37h)
-	.db 0FFh	; |■■■■■■■■| (offset 2E38h)
-	.db 0FFh	; |■■■■■■■■| (offset 2E39h)
-	.db 07Eh	; | ■■■■■■ | (offset 2E3Ah)
-	.db 0FFh	; |■■■■■■■■| (offset 2E3Bh)
-	.db 0FFh	; |■■■■■■■■| (offset 2E3Ch)
-	.db 07Ah	; | ■■■■ ■ | (offset 2E3Dh)
-	.db 0FBh	; |■■■■■ ■■| (offset 2E3Eh)
-	.db 0FFh	; |■■■■■■■■| (offset 2E3Fh)
-	.db 07Eh	; | ■■■■■■ | (offset 2E40h)
-;
-D_NE41:	.db 0FFh	; |■■■■■■■■| (offset 2E41h)
-	.db 081h	; |■      ■| (offset 2E42h)
-	.db 085h	; |■    ■ ■| (offset 2E43h)
-	.db 0A9h	; |■ ■ ■  ■| (offset 2E44h)
-	.db 091h	; |■  ■   ■| (offset 2E45h)
-	.db 0BDh	; |■ ■■■■ ■| (offset 2E46h)
-	.db 081h	; |■      ■| (offset 2E47h)
-	.db 081h	; |■      ■| (offset 2E48h)
-	.db 0BDh	; |■ ■■■■ ■| (offset 2E49h)
-	.db 0A9h	; |■ ■ ■  ■| (offset 2E4Ah)
-	.db 0A9h	; |■ ■ ■  ■| (offset 2E4Bh)
-	.db 09Dh	; |■  ■■■ ■| (offset 2E4Ch)
-	.db 081h	; |■      ■| (offset 2E4Dh)
-	.db 081h	; |■      ■| (offset 2E4Eh)
-	.db 091h	; |■  ■   ■| (offset 2E4Fh)
-	.db 0A9h	; |■ ■ ■  ■| (offset 2E50h)
-	.db 0A9h	; |■ ■ ■  ■| (offset 2E51h)
-	.db 0BDh	; |■ ■■■■ ■| (offset 2E52h)
-	.db 081h	; |■      ■| (offset 2E53h)
-	.db 081h	; |■      ■| (offset 2E54h)
-	.db 0ADh	; |■ ■ ■■ ■| (offset 2E55h)
-	.db 0ADh	; |■ ■ ■■ ■| (offset 2E56h)
-	.db 0BDh	; |■ ■■■■ ■| (offset 2E57h)
-	.db 081h	; |■      ■| (offset 2E58h)
-	.db 0FFh	; |■■■■■■■■| (offset 2E59h)
 ;
 D_NC47:	.db 018h, 018h, 018h, 018h
 	.db " raspolovenie  bis ozu -"
