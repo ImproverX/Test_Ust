@@ -547,7 +547,21 @@ L_0467:	MOV  A, E
 L_047D:	LDA     D_1A8B	; << L_0165
 	RET
 ;
-L_0481:	PUSH H		; << L_0162
+	; /// PLAY переключить на АУ
+L_ToAY:	LXI H,	L_AYPL
+	SHLD	X_0F17+1
+	LXI H,	D_NAY
+	SHLD	X_0EA4+1
+	RET
+;
+	; /// PLAY переключить на ВИ
+L_ToVI:	LXI H,	L_0F4A
+	SHLD	X_0F17+1
+	LXI H,	D_0DD4
+	SHLD	X_0EA4+1
+	RET
+;
+L_0481:	PUSH H		; << L_0162 (PLAY)
 	PUSH D
 	PUSH B
 	PUSH PSW
@@ -1810,7 +1824,24 @@ L_0C39:	CALL    L_0D0D
 	STA     D_1C16
 	CMA
 	STA     D_1C19
-	JMP     L_0D2E
+;	JMP     L_0D2E
+L_0D2E:	LDA     D_1A8B
+	RRC
+	RRC
+	RRC
+	LXI  B, M_0002	; ?
+L_0D37:	RLC
+	PUSH PSW
+	CC      L_0E03
+	POP  PSW
+	DCR  C
+	JP      L_0D37
+L_0D41:	POP  H
+	POP  D
+	POP  B
+	POP  PSW
+	EI
+	RET
 ;
 L_0C47:	RAR
 	JNC     L_0C4F
@@ -1953,24 +1984,6 @@ L_0D0D:	LDA     D_0D4F
 	OUT     002h
 	RET
 ;
-L_0D2E:	LDA     D_1A8B
-	RRC
-	RRC
-	RRC
-	LXI  B, M_0002	; ?
-L_0D37:	RLC
-	PUSH PSW
-	CC      L_0E03
-	POP  PSW
-	DCR  C
-	JP      L_0D37
-L_0D41:	POP  H
-	POP  D
-	POP  B
-	POP  PSW
-	EI
-	RET
-;
 D_0D4F:	.db 002h	; "_" - |      ■ | (offset 0D4Fh)
 D_0D50:	.db 001h	; "_" - |       ■| (offset 0D50h)
 D_0D51:	.db 000h	; "_" - |        | (offset 0D51h)
@@ -2058,32 +2071,22 @@ D_0DCF:	.db 005h	; "_" - |     ■ ■| (offset 0DCFh)
 	.db 0BDh	; "╜" - |■ ■■■■ ■| (offset 0DD2h)
 	.db 0D2h	; "╥" - |■■ ■  ■ | (offset 0DD3h)
 ;
-D_0DD4:	.db 02Bh	; "+" - |  ■ ■ ■■| (offset 0DD4h)
-	.db 0B3h	; "│" - |■ ■■  ■■| (offset 0DD5h)
-	.db 01Ch	; "_" - |   ■■■  | (offset 0DD6h)
-	.db 0A9h	; "й" - |■ ■ ■  ■| (offset 0DD7h)
-	.db 09Eh	; "Ю" - |■  ■■■■ | (offset 0DD8h)
-	.db 09Fh	; "Я" - |■  ■■■■■| (offset 0DD9h)
-	.db 0A9h	; "й" - |■ ■ ■  ■| (offset 0DDAh)
-	.db 096h	; "Ц" - |■  ■ ■■ | (offset 0DDBh)
-	.db 034h	; "4" - |  ■■ ■  | (offset 0DDCh)
-	.db 08Eh	; "О" - |■   ■■■ | (offset 0DDDh)
-	.db 039h	; "9" - |  ■■■  ■| (offset 0DDEh)
-	.db 086h	; "Ж" - |■    ■■ | (offset 0DDFh)
-	.db 0B0h	; "░" - |■ ■■    | (offset 0DE0h)
-	.db 07Eh	; "~" - | ■■■■■■ | (offset 0DE1h)
-	.db 094h	; "Ф" - |■  ■ ■  | (offset 0DE2h)
-	.db 077h	; "w" - | ■■■ ■■■| (offset 0DE3h)
-	.db 0DEh	; "▐" - |■■ ■■■■ | (offset 0DE4h)
-	.db 070h	; "p" - | ■■■    | (offset 0DE5h)
-	.db 088h	; "И" - |■   ■   | (offset 0DE6h)
-	.db 06Ah	; "j" - | ■■ ■ ■ | (offset 0DE7h)
-	.db 08Eh	; "О" - |■   ■■■ | (offset 0DE8h)
-	.db 064h	; "d" - | ■■  ■  | (offset 0DE9h)
-	.db 0E9h	; "щ" - |■■■ ■  ■| (offset 0DEAh)
-	.db 05Eh	; "^" - | ■ ■■■■ | (offset 0DEBh)
-	.db 095h	; "Х" - |■  ■ ■ ■| (offset 0DECh)
-	.db 059h	; "Y" - | ■ ■■  ■| (offset 0DEDh)
+	; делители для нот
+D_0DD4:	.db 02Bh, 0B3h, 01Ch, 0A9h	;ВИ
+	.db 09Eh, 09Fh, 0A9h, 096h
+	.db 034h, 08Eh
+	.db 039h, 086h, 0B0h, 07Eh
+	.db 094h, 077h, 0DEh, 070h
+	.db 088h, 06Ah, 08Eh, 064h
+	.db 0E9h, 05Eh, 095h, 059h
+;	
+D_NAY:	.db 03Dh, 00Dh, 007F, 00Ch	;AY8910
+	.db 0CBh, 00Bh, 022h, 00Bh
+	.db 082h, 00Ah
+	.db 0EBh, 009h, 05Ch, 009h
+	.db 0D6h, 008h, 057h, 008h
+	.db 0DFh, 007h, 06Eh, 007h
+	.db 003h, 007h, 09Fh, 006h
 ;
 L_0DEE:	PUSH PSW	; << L_0168
 	PUSH B
@@ -2127,15 +2130,20 @@ L_0E24:	RLC
 L_0E2F:	LXI  H, D_0DCC
 	DAD  B
 	MVI  M, 001h
-L_0E35:	MOV  A, C
-	INR  A
-	CMA
-	RRC
-	RRC
-	ANI     0C0h
-	ORI     030h
-	OUT     008h
-	RET
+L_0E35:	MOV  A, C	;!!!
+	INR  A		;!!!
+	CMA		;!!!
+	RRC		;!!!
+	RRC		;!!!
+	ANI     0C0h	;!!!
+	ORI     030h	;!!!
+	OUT     008h	;!!!
+	MVI  A, 008h	; для AY8910
+	ADD  C		;
+	OUT     015h	;
+	XRA  A		;
+	OUT     014h	;
+	RET		;!!!
 ;
 L_0E41:	PUSH H
 	PUSH H
@@ -2198,28 +2206,28 @@ L_0E9C:	INR  M
 	PUSH D
 	LXI  H, L_0EDE
 	PUSH H
-	LXI  H, D_0DD4
+X_0EA4:	LXI  H, D_0DD4	; делители для нот
 	LXI  D, 00004h	;+
-	CPI     043h
+	CPI     043h	;C
 	RZ
 	DAD  D
-	CPI     044h
+	CPI     044h	;D
 	RZ
 	DAD  D
-	CPI     045h
+	CPI     045h	;E
 	RZ
 	INX  H
 	INX  H
-	CPI     046h
+	CPI     046h	;F
 	RZ
 	DAD  D
-	CPI     047h
+	CPI     047h	;G
 	RZ
 	DAD  D
-	CPI     041h
+	CPI     041h	;A
 	RZ
 	DAD  D
-	CPI     042h
+	CPI     042h	;B
 	RZ
 	POP  H
 	POP  D
@@ -2273,7 +2281,7 @@ L_0F08:	DCR  C
 	JMP     L_0F08
 ;
 L_0F16:	POP  B
-	CALL    L_0F4A
+X_0F17:	CALL    L_0F4A	;!!!
 	POP  H
 L_0F1B:	LDAX D
 	CPI     030h
@@ -2308,7 +2316,7 @@ L_0F33:	PUSH H
 L_0F48:	POP  H
 	RET
 ;
-L_0F4A:	PUSH PSW
+L_0F4A:	PUSH PSW	; PLAY для ВИ
 	MVI  A, 009h
 	ADD  C
 	STA     X_0F60+1
@@ -2325,6 +2333,26 @@ L_0F4A:	PUSH PSW
 X_0F60:	OUT     009h
 	MOV  A, H
 X_0F63:	OUT     009h
+	POP  PSW
+	RET
+;
+L_AYPL: PUSH PSW	; PLAY для AY
+	MVI  A, 008h
+	ADD  C
+	OUT     015h
+	MVI  A, 00Dh
+	OUT     014h
+	MOV  A, C
+	ADD  A
+	OUT     015h
+	MOV  A, L
+	OUT     014h
+	MOV  A, C
+	ADD  A
+	INR  A
+	OUT     015h
+	MOV  A, H
+	OUT     014h
 	POP  PSW
 	RET
 ;
