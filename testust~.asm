@@ -552,6 +552,10 @@ L_ToAY:	LXI H,	L_AYPL
 	SHLD	X_0F17+1
 	LXI H,	D_NAY
 	SHLD	X_0EA4+1
+	MVI  A, 007h	; включение AY
+	OUT     015h
+	MVI  A, 038h
+	OUT     014h
 	RET
 ;
 	; /// PLAY переключить на ВИ
@@ -559,6 +563,10 @@ L_ToVI:	LXI H,	L_0F4A
 	SHLD	X_0F17+1
 	LXI H,	D_0DD4
 	SHLD	X_0EA4+1
+	MVI  A, 007h	; выключение AY
+	OUT     015h
+	MVI  A, 03Fh
+	OUT     014h
 	RET
 ;
 L_0481:	PUSH H		; << L_0162 (PLAY)
