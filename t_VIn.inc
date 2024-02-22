@@ -64,6 +64,7 @@ L_4ACF:	LXI  B, 00101h	;+
 	LXI  B, D_4C63	; музыка 3
 	CALL    L_0162	; PLAY
 	CALL    L_229C	; (далее по кн.)
+	CALL    L_0168
 	LXI  B, 03125h	;+
 	CALL    L_2220
 	LXI  H, D_4D66	; каналы 2
@@ -73,6 +74,7 @@ L_4ACF:	LXI  B, 00101h	;+
 	LXI  B, D_4C63	; музыка 3
 	CALL    L_0162	; PLAY
 	CALL    L_229C	; (далее по кн.)
+	CALL    L_0168
 	LXI  B, 03125h	;+
 	CALL    L_2220
 	LXI  H, D_4DD3	; каналы 3
@@ -82,6 +84,7 @@ L_4ACF:	LXI  B, 00101h	;+
 	LXI  B, D_4BC3	; музыка 1
 	CALL    L_0162	; PLAY
 	CALL    L_229C	; (далее по кн.)
+	CALL    L_0168
 	MVI  A, 008h	; проверка наличия AY
 ;	MVI  A, 009h
 ;	MVI  A, 00Ah
@@ -99,6 +102,7 @@ L_4ACF:	LXI  B, 00101h	;+
 	LXI  B, D_4C13	; музыка 2
 	CALL    L_0162	; PLAY
 	CALL    L_229C	; (далее по кн.)
+	CALL    L_0168
 	LXI  B, 03124h	;+
 	CALL    L_2220
 	LXI  H, D_TAY2	; каналы AY2
@@ -108,6 +112,7 @@ L_4ACF:	LXI  B, 00101h	;+
 	LXI  B, D_4BC3	; музыка 1
 	CALL    L_0162	; PLAY
 	CALL    L_229C	; (далее по кн.)
+	CALL    L_0168
 	CALL	L_ToVI	; переключить на ВИ
 L_4BA2:	CALL    L_ENTS	;
 	CPI     00Dh
