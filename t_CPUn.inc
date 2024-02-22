@@ -138,7 +138,7 @@ D_2A6A:	.db 000h	; Палитра для теста ЦПУ
 	.db 010h	;
 	.db 0D0h	;
 ;
-T_Z80:	.db "ZYLOG Z80  "
+T_Z80:	.db "ZILOG Z80  "
 T_8080:	.db "kr580wm80a "
 T_VM1:	.db "kr580wm1   "
 T_8085:	.db "kr1821wm85a"
