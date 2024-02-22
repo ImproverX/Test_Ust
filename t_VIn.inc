@@ -85,14 +85,14 @@ L_4ACF:	LXI  B, 00101h	;+
 	CALL    L_0162	; PLAY
 	CALL    L_229C	; (далее по кн.)
 	CALL    L_0168
-	MVI  A, 008h	; проверка наличия AY
+;;	MVI  A, 008h	; проверка наличия AY
 ;	MVI  A, 009h
 ;	MVI  A, 00Ah
-	OUT     015h
+;;	OUT     015h
 	IN      015h
 	INR  A
 	JZ	L_4BA2
-	CALL	L_ToAY	; переключить на AY
+	CALL	L_ToAY	; переключить PLAY на AY
 	LXI  B, 03124h	;+
 	CALL    L_2220
 	LXI  H, D_TAY1	; каналы AY1
