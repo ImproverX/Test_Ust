@@ -5141,6 +5141,15 @@ D_1C5F:	.db 000h	; "_" - |        | (offset 1C5Fh)
 D_1C60:	.db 000h	; "_" - |        | (offset 1C60h)
 D_1C61:	.db 000h	; "_" - |        | (offset 1C61h)
 D_1C62:	.dw 00000h
+D_1C64:	.dw 00000h
+D_1C66:	.db 000h	; "_" - |        | (offset 1C66h)
+D_TPPC:	.db 000h	; Тип ПК, 0=Вектор, {D_PC6 - D_VECT}=ПК-6128ц
+;
+D_1A8F:	.ds 080h
+;
+D_1B0F:	.ds 080h
+;
+D_1B8F:	.ds 080h
 ;
 	.org (((($ - 1) / 0100h) + 1) * 0100h)	;01D00h
 D_1D00:	.ds 0200h	; выравнивание по хх00
@@ -5154,16 +5163,6 @@ D_1800:	.db 0FFh	; " " - |■■■■■■■■| (offset 1800h)
 	.db 0FFh	; " " - |■■■■■■■■| (offset 1805h)
 	.db 0FFh	; " " - |■■■■■■■■| (offset 1806h)
 	.db 0FFh	; " " - |■■■■■■■■| (offset 1807h)
-;
-D_1C64:	.dw 00000h
-D_1C66:	.db 000h	; "_" - |        | (offset 1C66h)
-D_TPPC:	.db 000h	; Тип ПК, 0=Вектор, {D_PC6 - D_VECT}=ПК-6128ц
-;
-D_1A8F:	.ds 080h
-;
-D_1B0F:	.ds 080h
-;
-D_1B8F:	.ds 080h
 ;
 L_2000:	LXI  SP,M_7000	; ?
 	CALL    L_221A	; очистка экрана
