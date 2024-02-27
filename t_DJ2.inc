@@ -4,63 +4,63 @@ M_A000:	.equ 0A000h
 ;
 L_5751:	MVI  A, 000h
 	CALL    L_0156
-	LXI  D, D_5AD3	;
+	LXI  D, D_5AD3	; палитра
 	CALL    L_0189
 	LXI  B, 00101h	;+
 	MVI  A, 001h
-	CALL    L_013E
+	CALL    L_013E	; PLOT
 	LXI  B, 0C4FEh	;+
 	MVI  A, 002h
-	CALL    L_0141
+	CALL    L_0141	; LINE
 	MVI  A, 005h
-	CALL    L_0156
+	CALL    L_0156	; цвет
 	LXI  B, 02727h	;+
 	CALL    L_2220	;
 	LXI  H, D_5AA0	; "дж1,дж2"
 	CALL    L_0138
 	MVI  A, 007h
 	CALL    L_0156
-	LXI  H, D_59A4	;
+	LXI  H, D_59A4	; картинки стрелок
 	SHLD    D_5ACE	;
-	LXI  H, 00080h	;+
+	LXI  H, 0E86Eh	;00080h	;+
 	SHLD    D_5AD0	;
 	MVI  A, 001h
 L_5790:	PUSH PSW
-	CALL    L_5883
+	CALL    L_5883	; считать в ВС координаты из таблицы
 	PUSH B
-	CALL    L_58C4
+	CALL    L_58C4	; нарисовать стрелку дж1
 	POP  B
 	MOV  A, C
 	ADI     070h
 	MOV  C, A
-	CALL    L_58C4
+	CALL    L_58C4	; нарисовать стрелку дж2
 	LHLD    D_5ACE	;
 	LXI  B, 0001Ch	;+
 	DAD  B
-	SHLD    D_5ACE	;
+	SHLD    D_5ACE	; следующая стрелка
 	POP  PSW
 	INR  A
 	CPI     009h
 	JNZ     L_5790
-	JMP     L_57BB
+	JMP     L_57BB	; >>
 ;
 L_57B4:	LHLD    D_5AD0	;
 	XRA  A
 	CALL    L_593A
 L_57BB:	LXI  H, 01000h	;+
-L_57BE:	CALL    L_013B
-	CPI     003h
-	JZ      L_57E4
+L_57BE:	CALL    L_013B	; INKEY
+	CPI     003h	; УС+Ц
+	JZ      L_57E4	; >>> выход по сбросу
 	CPI     00Dh
-	JZ      L_57E3
+	JZ      L_57E3	; >>> выход всё хорошо
 	MVI  D, 001h	; дж.1
 	IN      00Fh	;<<<<<<<<<<
 	ORA  A
 	JZ	L_D2	; = 0 -- джойстик ПК6128, нет нажатий или отключён
 	CMA
-	ORA  A
+	ORA  A		; джойстик С
 ;	ANI     0CFh	; 1100 1111 (кнопки+стрелки)
-	JNZ     L_57ED	; <> 0 -- джойстик С, есть нажатия
+	JNZ     L_57ED	; <> 0 -- есть нажатия
 L_D2:	INR  D		; дж.2
 	IN      00Eh	;<<<<<<<<<<
 	ORA  A
@@ -68,15 +68,13 @@ L_D2:	INR  D		; дж.2
 	CMA
 	ORA  A
 ;	ANI     0CFh
-	JNZ     L_57ED
+	JNZ     L_57ED	; <> 0 -- есть нажатия
 L_D3:	EI
 	HLT
 	DCX  H
 	MOV  A, L
 	ORA  H
-	RZ
-	JMP     L_57BE
-;
+	JNZ     L_57BE	; цикл ожидания нажатий (с выходом по счётчику)
 L_57E3:	XRA  A
 L_57E4:	PUSH PSW
 	LXI  D, D_2192	; ссылка на палитру
@@ -85,29 +83,26 @@ L_57E4:	PUSH PSW
 	RET
 ;
 L_57ED:	PUSH D
-	LXI  H, L_57FF	; адрес перехода
 	PUSH PSW
-	PUSH H
-	LXI  H, L_5890	; адрес перехода дж.1
+	LXI  H, M_A810	; ?
 	DCR  D
 	JZ      L_57FD
-	LXI  H, L_589A	; адрес перехода дж.2
-L_57FD:	PUSH H
-	RET
-;
-L_57FF:	POP  PSW
+	LXI  H, M_B610	; ?
+L_57FD:	LXI  D, D_594C	; отрисовка джойстика
+	CALL    L_58A4
+	POP  PSW
 	CALL    L_5856	;>> проверка команд с джойстика
 	MOV  A, C
 	ORA  A
-	JZ      L_5837
+	JZ      L_5837	;>> направление не нажато
 	PUSH B
-	CALL    L_5883
+	CALL    L_5883	; определяет координаты стрелки
 	POP  H
 	POP  D
 	PUSH D
 	PUSH H
 	DCR  D
-	JZ      L_5818
+	JZ      L_5818	; >> дж1
 	MOV  A, C
 	ADI     070h
 	MOV  C, A
@@ -128,24 +123,24 @@ L_5818:	LXI  H, 08000h	;+
 L_5837:	MOV  A, B	; кнопки
 	ORA  A
 	POP  D
-	JZ      L_57B4
-	LXI  H, 0A96Fh	;+
+	JZ      L_57B4	;>> кнопки не нажаты
+	LXI  H, 0A96Fh	;+ координаты кнопок
 	DCR  D
 	JZ      L_5846
 	MVI  H, 0B7h	; дж.2
-L_5846:	CPI     002h
-	JZ	L_584X	; кнопка 2
+L_5846:	DCR  A		;
+	JZ	L_584X	; кнопка 1
 	DCR  H
-	CPI     003h
+	CPI     002h	;
 	JZ	L_584X	; кнопка 1+2
-	DCR  H		; кнопка 1
-L_584X:	LXI  D, D_5A84	;
+	DCR  H		; кнопка 2
+L_584X:	LXI  D, D_5A84	; рисунок кнопки
 	PUSH H
-	CALL    L_5926
+	CALL    L_5926	; нарисовать
 	HLT
 	XRA  A
 	POP  H
-	CALL    L_593A
+	CALL    L_593A	; стереть
 	JMP     L_57B4
 ;
 L_5856:	MOV  B, A	; проверка команд с джойстика
@@ -164,16 +159,9 @@ L_CLP:	CMP  M
 	JNZ	L_CLP
 L_587B:	MOV  A, B
 	ANI     0C0h
-	MVI  B, 003h
-	CPI     0C0h	; кнопки 1+2
-	RZ
-	DCR  B
-	CPI     040h	; кнопка 2
-	RZ
-	DCR  B
-	CPI     080h	; кнопка 1
-	RZ
-	DCR  B		; нет нажатых кнопок
+	RLC
+	RLC
+	MOV  B, A
 	RET
 ;
 ;Джойстик С (02)
@@ -207,16 +195,6 @@ L_5883:	LXI  H, D_5ABE	; грузит BC из таблицы по смещени
 	MOV  B, M
 	RET
 ;
-L_5890:	LXI  D, D_594C	; отрисовка джойстика
-	LXI  H, M_A810	; ?
-	CALL    L_58A4
-	RET
-;
-L_589A:	LXI  D, D_594C	; отрисовка джойстика
-	LXI  H, M_B610	; ?
-	CALL    L_58A4
-	RET
-;
 L_58A4:	PUSH H
 L_58A5:	LDAX D
 	INX  D
@@ -241,7 +219,7 @@ L_58B9:	MOV  M, C
 L_58C2:	POP  H
 	RET
 ;
-L_58C4:	PUSH H
+L_58C4:	PUSH H		; нарисовать стрелку
 	PUSH B
 	MVI  A, 002h
 	CALL    L_013E
@@ -715,3 +693,4 @@ D_5AD3:	.db 040h	; Палитра
 	.db 098h	;
 	.db 036h	;
 	.db 036h	;
+;
