@@ -1,6 +1,6 @@
-M_A810:	.equ 0A810h
-M_B610:	.equ 0B610h
-M_A000:	.equ 0A000h
+M_A810:	.equ 0A810h	;
+M_B610:	.equ 0B610h	;
+M_A000:	.equ 0A000h	;
 ;
 L_5751:	MVI  A, 000h
 	CALL    L_0156
