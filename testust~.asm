@@ -7,8 +7,7 @@ M_0010:	.equ    00010h
 M_0038:	.equ    00038h
 M_0039:	.equ    00039h
 M_0080:	.equ    00080h
-M_7000:	.equ    07000h
-M_7FFF:	.equ    07FFFh
+M_STEK:	.equ    07000h
 M_8000:	.equ    08000h
 M_E000:	.equ    0E000h
 M_FFFF:	.equ    0FFFFh
@@ -3680,7 +3679,7 @@ L_172B:	XRA  A
 	ORA  H
 	RET
 ;
-L_1734:	LXI  H, M_7FFF	; ?
+L_1734:	LXI  H, 07FFFh	;+
 	RET
 ;
 ;;L_1744:	PUSH B		; << L_0180
@@ -5164,7 +5163,7 @@ D_1800:	.db 0FFh	; " " - |■■■■■■■■| (offset 1800h)
 	.db 0FFh	; " " - |■■■■■■■■| (offset 1806h)
 	.db 0FFh	; " " - |■■■■■■■■| (offset 1807h)
 ;
-L_2000:	LXI  SP,M_7000	; ?
+L_2000:	LXI  SP,M_STEK	; ?
 	CALL    L_221A	; очистка экрана
 	; определяем ПК-6128ц по конфигурации памяти
 	LXI  B, 02211h	; константы
