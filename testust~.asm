@@ -5619,7 +5619,7 @@ L_2312:	HLT
 	JNZ     L_2312
 	JMP     L_22FE
 ;
-L_2324:	MVI  B, 00Ch
+L_2324:	MVI  B, 00Ch	; количество тестов
 	LXI  D, 0002Bh	;+
 	LXI  H, D_27A1
 L_232C:	MOV  A, M
@@ -6013,7 +6013,7 @@ L_2653:	INX  H
 	JMP     L_0138
 ;
 L_265E:	LXI  H, D_27A1
-	MVI  B, 00Ch
+	MVI  B, 00Dh	; количество строк тестов -1
 	INX  H
 	INX  H
 L_2665:	MVI  M, 000h
