@@ -16,7 +16,7 @@ L_596A:	LXI  B, 00101h	;+
 	CALL    L_226E	; нижний прямоугольник
 	MVI  A, 078h
 	CALL    L_0156
-	DI
+	DI		;----------
 	MVI  A, 001h
 	STA     D_5E05
 	LXI  H, D_5E00
@@ -28,34 +28,34 @@ L_599D:	MVI  M, 000h
 	LXI  B, 03522h	;+
 	CALL    L_2220
 	LXI  H, M_C0FF	; ?
-	CALL    L_5B92
+	CALL    L_5B92	; Тест 1 ???
 	CPI     001h
 	JNZ     L_59BE
-	LXI  H, D_5A81
+	LXI  H, D_5A81	; "ЭД не подключён"
 	CALL    L_0138
-	JMP     L_5A68
+	JMP     L_5A68	;>>>
 ;
 L_59BE:	CPI     002h
 	JNZ     L_59CC
-	LXI  H, D_5AA8
+	LXI  H, D_5AA8	; "Не работает переключение ОЗУ диска"
 	CALL    L_0138
-	JMP     L_5A68
+	JMP     L_5A68	;>>>
 ;
 L_59CC:	LXI  H, M_C0FF	; ?
-	CALL    L_5BC9
+	CALL    L_5BC9	; Тест 2 ???
 	CPI     001h
 	JNZ     L_59E0
-	LXI  H, D_5ACF
+	LXI  H, D_5ACF	; "Нет подключения стека диска"
 	CALL    L_0138
-	JMP     L_5A68
+	JMP     L_5A68	;>>>
 ;
 L_59E0:	CPI     002h
 	JNZ     L_59EE
-	LXI  H, D_5AF6
+	LXI  H, D_5AF6	; "Не работает переключение стека диска"
 	CALL    L_0138
-	JMP     L_5A68
+	JMP     L_5A68	;>>>
 ;
-L_59EE:	CALL    L_5D3C
+L_59EE:	CALL    L_5D3C	; рисовать чипы
 	LXI  B, 02620h	;+
 	CALL    L_2220
 	LXI  H, D_5943	; текст шапки 1
@@ -108,7 +108,7 @@ L_5A0D:	CALL    L_5C32
 	INX  H
 	ORA  M
 	JNZ     L_5A62
-	LXI  H, D_5B44
+	LXI  H, D_5B44	; "Ёмкость диска..."
 	CALL    L_0138
 	XRA  A
 	STA     D_5E05
@@ -116,7 +116,7 @@ L_5A0D:	CALL    L_5C32
 ;
 D_5A61:	.db 005h	; "_" - |     ■ ■| (offset 5A61h)
 ;
-L_5A62:	LXI  H, D_5B1D
+L_5A62:	LXI  H, D_5B1D	; "Неисправна память..."
 	CALL    L_0138
 L_5A68:	LXI  B, 03622h	;+
 	CALL    L_2220
@@ -274,7 +274,7 @@ X_O5:	OUT     010h
 ;
 L_5BC9:	MVI  B, 00Ch
 	MOV  C, M
-	CALL    L_5D2E
+	CALL    L_5D2E	; сохранение указателя стека
 	SPHL
 L_5BD0:	MVI  A, 010h
 	ORA  B
@@ -303,7 +303,7 @@ X_O7:	OUT     010h
 	RET
 ;
 L_5BF9:	MVI  B, 00Ch
-	CALL    L_5D2E
+	CALL    L_5D2E	; сохранение указателя стека
 	SPHL
 L_5BFF:	MVI  A, 010h
 	ORA  B
@@ -340,7 +340,7 @@ L_5C32:	RAL
 	RAL
 	ANI     00Ch
 	MOV  B, A
-	CALL    L_5D2E
+	CALL    L_5D2E	; сохранение указателя стека
 	MVI  A, 010h
 	ORA  B
 X_OB:	OUT     010h
@@ -375,7 +375,7 @@ L_5C5F:	POP  D
 	JZ      L_5C7E
 	MOV  D, A
 	SHLD    D_5DFC
-	LXI  H, D_5DFF
+	LXI  H, D_5E00-1
 	LDA     D_5E04
 L_5C73:	INX  H
 	DCR  A
@@ -398,7 +398,7 @@ L_5C7E:	INR  B
 	JZ      L_5CA1
 	MOV  D, A
 	SHLD    D_5DFC
-	LXI  H, D_5DFF
+	LXI  H, D_5E00-1
 	LDA     D_5E04
 L_5C96:	INX  H
 	DCR  A
@@ -448,7 +448,7 @@ L_5CCE:	POP  D
 	JZ      L_5CED
 	MOV  D, A
 	SHLD    D_5DFC
-	LXI  H, D_5DFF
+	LXI  H, D_5E00-1
 	LDA     D_5E04
 L_5CE2:	INX  H
 	DCR  A
@@ -471,7 +471,7 @@ L_5CED:	DCR  B
 	JZ      L_5D10
 	MOV  D, A
 	SHLD    D_5DFC
-	LXI  H, D_5DFF
+	LXI  H, D_5E00-1
 	LDA     D_5E04
 L_5D05:	INX  H
 	DCR  A
@@ -499,7 +499,7 @@ X_OC:	OUT     010h
 	LHLD    D_5DFC
 	RET
 ;
-L_5D2E:	SHLD    D_5DFC
+L_5D2E:	SHLD    D_5DFC	; сохранение указателя стека
 	LXI  H, M_0002	; ?
 	DAD  SP
 	SHLD    D_5DFE
@@ -601,9 +601,8 @@ L_5DC7:	POP  H
 	POP  B
 	RET
 ;
-D_5DFC:	.dw 00000h	;
-D_5DFE:	.db 000h	; "_" - |        | (offset 5DFEh)
-D_5DFF:	.db 000h	; "_" - |        | (offset 5DFFh)
+D_5DFC:	.dw 00000h	; место для временного сохранения HL
+D_5DFE:	.dw 00000h	; указатель стека+2
 D_5E00:	.db 000h	; ошибки КД, стока чипов №1
 	.db 000h	; ошибки КД, стока чипов №3
 	.db 000h	; ошибки КД, стока чипов №2
@@ -624,3 +623,4 @@ D_XP:	.dw X_O1+1	; список адресов команд OUT для КД
 	.dw X_OB+1
 	.dw X_OC+1
 	.dw 00000h
+;
