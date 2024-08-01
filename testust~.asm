@@ -7,7 +7,7 @@ M_0010:	.equ    00010h
 M_0038:	.equ    00038h
 M_0039:	.equ    00039h
 M_0080:	.equ    00080h
-M_STEK:	.equ    07000h
+M_STEK:	.equ    07C00h	; 7C00h..7FFFh используется тестом экрана
 M_8000:	.equ    08000h
 M_E000:	.equ    0E000h
 M_FFFF:	.equ    0FFFFh
@@ -1743,7 +1743,7 @@ L_0B8B:	DCR  M
 ;;	MVI  A, 0FFh
 ;;	RET
 ;
-D_0BB1:	.db 080h	; "А" - |■       | (offset 0BB1h) палитра ?
+D_0BB1:	.db 080h	; "А" - |■       | (offset 0BB1h) текущая палитра ?
 	.db 080h	; "А" - |■       | (offset 0BB2h)
 	.db 080h	; "А" - |■       | (offset 0BB3h)
 	.db 080h	; "А" - |■       | (offset 0BB4h)
@@ -3482,7 +3482,7 @@ L_14C8:	CPI     028h	; << L_018F
 ;;	MOV  H, A
 ;;	MOV  A, H
 ;;	ORA  A
-L_160C:	NOP
+;;L_160C:	NOP
 ;;	NOP
 ;;	PUSH B
 ;;	PUSH D
@@ -5967,7 +5967,7 @@ L_25F4:	LXI  H, 001F4h
 	RET
 ;
 D_25FB:	.db 002h	; 2 = "жук" держит строку, "0" = отпустил
-D_25FC:	.db 004h	; номер строки "жука", отсчёт снизу с 0
+D_25FC:	.db 005h	; номер строки "жука", отсчёт снизу с 0
 D_25FD:	.db 000h	; счётчик-таймер до запуска теста
 D_25FE:	.dw 001F4h	; счётчик-таймер до запуска теста
 ;
@@ -6410,8 +6410,8 @@ D_27A1:	.dw L_2324
 ;
 	.dw L_29A5
 	.db 000h, 0D0h
-	.db "       bazowogo "
-	.db " mikroprocessora      "
+	.db "      bazowogo "
+	.db " mikroprocessora       "
 	.db 000h
 ;
 	.dw L_2C10
@@ -6440,7 +6440,7 @@ D_27A1:	.dw L_2324
 ;
 	.dw L_41C3
 	.db 000h, 0D0h
-	.db "  ustrojstwa OTObraveniq "
+	.db "  ustrojstwa otobraveniq "
 	.db " informacii  "
 	.db 000h
 ;
@@ -6473,11 +6473,11 @@ D_27A1:	.dw L_2324
 	.db "   "
 	.db 000h
 ;
-;;	.dw L_6400
-;;	.db 000h, 0D0h
-;;	.db "     zwukowogo sintezatora"
-;;	.db " AY8910     "
-;;	.db 000h
+	.dw L_R000
+	.db 000h, 0D0h
+	.db "       ~asow realxnogo "
+	.db "wremeni        "
+	.db 000h
 ;
 	.dw L_50F3
 	.db 000h, 0D0h
@@ -6547,12 +6547,13 @@ D_BRAK:	.db 0FFh	; |■■■■■■■■|
 #include "t_RAM6n.inc"
 #include "t_KBDn.inc"
 #include "t_MAGn.inc"
-#include "t_PUn.inc"
+#include "t_PUn-.inc"
 #include "t_MONn.inc"
 #include "t_VIn.inc"
 #include "t_PRNn.inc"
 #include "t_KDn.inc"
 #include "t_DJ2.inc"
+#include "t_RTC.inc"
 	.org (((($ - 1) / 0100h) + 1) * 0100h)	;Выравнивание на адрес ХХ00h
 #include "t_DOPn.inc"
 ;
