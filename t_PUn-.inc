@@ -18,11 +18,11 @@ L_393D:	DCX  D
 	ORA  E
 	JZ      L_3B49
 	CALL    L_013B
-	CPI     003h	; "F4" / "ìë"+"ë"
+	CPI     003h	; "F4" / "–£–°"+"–°"
 	JZ      L_3B51
-;	CPI     01Fh	; "ëíê"
-;	JZ      L_3A06	; >> ‚•·‚ òÄÇÇ ® òì ??
-	CPI     00Dh	; "Çä"
+;	CPI     01Fh	; "–°–¢–†"
+;	JZ      L_3A06	; >> —Ç–µ—Å—Ç –®–ê–í–í –∏ –®–£ ??
+	CPI     00Dh	; "–í–ö"
 	JZ      L_3974
 	CPI     020h	; " "
 	JNZ     L_393D
@@ -33,10 +33,10 @@ L_395C:	LXI  B, 03821h	;+
 	CALL    L_RHEX
 	JNZ     L_395C
 	CPI     010h
-	JNZ     L_N10	; ≠• 10h
-	CMP  H		; Ø‡Æ¢•‡™†, •·´® °Î´ Ø„·‚Æ© ¢¢Æ§
+	JNZ     L_N10	; –Ω–µ 10h
+	CMP  H		; –ø—Ä–æ–≤–µ—Ä–∫–∞, –µ—Å–ª–∏ –±—ã–ª –ø—É—Å—Ç–æ–π –≤–≤–æ–¥
 	JZ      L_N10
-	MVI  A, 004h	; •·´® Ø‡Æ·‚Æ Çä, ‚Æ ØÆ‡‚ = 4
+	MVI  A, 004h	; –µ—Å–ª–∏ –ø—Ä–æ—Å—Ç–æ –í–ö, —Ç–æ –ø–æ—Ä—Ç = 4
 L_N10:	STA     D_3C56
 L_3974:	LXI  B, 01200h	;+00A00h
 	LXI  H, 0C408h	;+
@@ -62,11 +62,11 @@ L_3974:	LXI  B, 01200h	;+00A00h
 	CALL    L_0129
 	INR  A
 	CALL    L_0135
-	LXI  H, D_BOTS	; ≠®¶≠ÔÔ ·‚‡Æ™†
+	LXI  H, D_BOTS	; –Ω–∏–∂–Ω—è—è —Å—Ç—Ä–æ–∫–∞
 	CALL    L_0138
 	MVI  A, 00Ah
 	CALL    L_0156
-	LXI  H, D_3FC8	; ¢Î¢Æ§Î èì
+	LXI  H, D_3FC8	; –≤—ã–≤–æ–¥—ã –ü–£
 	CALL    L_0138
 	MVI  A, 007h
 	CALL    L_0156
@@ -235,7 +235,7 @@ L_3C2B:	ADI     04Bh
 D_3C53:	.db 000h	; "_" - |        | (offset 3C53h)
 D_3C54:	.db 000h	; "_" - |        | (offset 3C54h)
 	.db 000h	; "_" - |        | (offset 3C55h)
-D_3C56:	.db 004h	; "_" - |     ˛  | (offset 3C56h)
+D_3C56:	.db 004h	; "_" - |     ‚ñ†  | (offset 3C56h)
 ;
 D_3C57:	.db "    prowerka interfejsa"
 	.db " sostoit iz wywoda"
