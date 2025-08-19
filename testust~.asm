@@ -5718,7 +5718,8 @@ D_23E4:	.db 000h, 000h, 000h
 	.db 000h
 ;
 D_2412:	.db 000h, 000h, 000h
-	.db "аna~alo  wypolneniq"
+	.db 0A0h
+	.db "na~alo  wypolneniq"
 	.db 000h
 ;
 L_2429:	LXI  H, D_23CD
