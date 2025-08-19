@@ -47,11 +47,13 @@ L_5790:	PUSH PSW
 L_57B4:	LHLD    D_5AD0	;
 	XRA  A
 	CALL    L_593A
-L_57BB:	LXI  H, 01000h	;+
+L_57BB:	LXI  H, D_5AA1	; текст
+	CALL    L_0138	; >>
+	LXI  H, 01000h	;+ счётчик ожидания нажатий
 L_57BE:	CALL    L_013B	; INKEY
 	CPI     003h	; УС+Ц
 	JZ      L_57E4	; >>> выход по сбросу
-	CPI     00Dh
+	CPI     00Dh	; ВК
 	JZ      L_57E3	; >>> выход всё хорошо
 	MVI  D, 001h	; дж.1
 	IN      00Fh	;<<<<<<<<<<
@@ -663,6 +665,11 @@ D_5AA0:	.db "dvojstik 1"
 	.db "dvojstik 2"
 	.db 000h	; "_" - |        | (offset 5ABDh)
 ;
+D_5AA1:	.db 01Bh, 059h, 038h, 021h
+	.db "dvojstiki: "
+	.db "<wk>-isprawny,<us>+<C>-o{ibka"
+	.db 000h
+;	
 D_5ABE:	.dw 08D3Fh	;1
 	.dw 08D5Fh	;2
 	.dw 06D5Fh	;3
@@ -693,4 +700,4 @@ D_5AD3:	.db 040h	; Палитра
 	.db 098h	;
 	.db 036h	;
 	.db 036h	;
-;
+;	
